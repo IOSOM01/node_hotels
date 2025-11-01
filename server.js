@@ -1,11 +1,12 @@
 const express = require("express");
 const app = express();
 const db = require("./db");
+require("dotenv").config();
+
+const PORT = process.env.PORT || 4000;
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
-
-const Person = require("./models/Person");
 
 app.get("/", function (req, res) {
   res.send("start hotel chain");
@@ -16,4 +17,4 @@ app.get("/", function (req, res) {
 const personRoutes = require("./routes/personRoutes");
 app.use("/person", personRoutes);
 
-app.listen(4000);
+app.listen(PORT);
