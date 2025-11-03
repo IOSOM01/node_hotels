@@ -1,0 +1,26 @@
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const Person = require("../models/Person");
+
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      console.log("Recived credential:-", username, password);
+
+      const user = await Person.findOne({ username: username });
+      if (!user) done(null, false, { message: "user not found" });
+
+      const passwordMatch = await user.comparePassword(password);
+
+      if (passwordMatch) {
+        done(null, user);
+      } else {
+        done(null, false, { message: "password not match" });
+      }
+    } catch (err) {
+      done(err);
+    }
+  })
+);
+
+module.exports = passport;
